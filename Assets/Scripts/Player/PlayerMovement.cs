@@ -16,13 +16,20 @@ namespace Player
 
         private SpriteRenderer _currentSpritePlayer;
         private Animator _playerAnim;
+        [SerializeField]
+        private RuntimeAnimatorController _playerDayController;
+        [SerializeField]
+        private RuntimeAnimatorController _playerNightController;
+
         private Controller2D _control;
+        private DataPlayer _dataPlayer;
 
         private void Awake()
         {
             _control = GetComponent<Controller2D>();
             _playerAnim = GetComponent<Animator>();
             _currentSpritePlayer = GetComponent<SpriteRenderer>();
+            _dataPlayer = GetComponent<DataPlayer>();
         }
 
         private void Update()
@@ -65,19 +72,18 @@ namespace Player
                 _playerAnim.SetBool("IsRunning", false);
             }
 
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.Z) && _dataPlayer.JewelAmount > 0)
             {
+                _dataPlayer.DecrementJewel();
                 _control.StartCoroutine("TransitionDayAndNight");
                 GameManager.Instance.ChangeDayCycle();
                 if (GameManager.Instance.CurrentCycle == GameManager.DayNightCycle.Day)
                 {
-                    _playerAnim.SetBool("IsDay", true);
-                    _playerAnim.Play("Player_Idle_Day");
+                    _playerAnim.runtimeAnimatorController = _playerDayController;
                 }
                 else
                 {
-                    _playerAnim.SetBool("IsDay", false);
-                    _playerAnim.Play("Player_Idle");
+                    _playerAnim.runtimeAnimatorController = _playerNightController;
                 }
             }
 

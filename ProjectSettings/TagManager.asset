@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Black
   - White
+  - Jewel
+  - Dead
+  - Key
   layers:
   - Default
   - TransparentFX
