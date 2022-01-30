@@ -5,6 +5,7 @@ namespace Manager
     public class AudioManager : MonoBehaviour
     {
 
+        [SerializeField]
         private AudioClip[] _bgmsAudioClips;
         private AudioSource _bgm;
         [SerializeField]
