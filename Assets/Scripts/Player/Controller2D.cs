@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Player
@@ -45,6 +46,14 @@ namespace Player
             }
         }
 
+        private void ApplyMovement(float amountMovement)
+        {
+            var velocityPlayer = new Vector2(amountMovement * 10, _playerRB.velocity.y);
+
+            Vector2 velocity = Vector2.zero;
+            _playerRB.velocity = Vector2.SmoothDamp(_playerRB.velocity, velocityPlayer, ref velocity, _smoothMovement);
+        }
+
         public void Movement(float amountMovement, bool isJumping)
         {
             if (OnGround || _airControl)
@@ -59,13 +68,14 @@ namespace Player
             }
         }
 
-        private void ApplyMovement(float amountMovement)
+
+        public IEnumerator TransitionDayAndNight()
         {
-            var velocityPlayer = new Vector2(amountMovement * 10, _playerRB.velocity.y);
+            _playerRB.constraints = RigidbodyConstraints2D.FreezeAll;
+            yield return new WaitForSeconds(1f);
+            _playerRB.constraints = RigidbodyConstraints2D.None;
+            _playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-            Vector2 velocity = Vector2.zero;
-            _playerRB.velocity = Vector2.SmoothDamp(_playerRB.velocity, velocityPlayer, ref velocity, _smoothMovement);
         }
-
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Manager;
 
@@ -35,10 +36,6 @@ namespace Player
             _isJumping = false;
         }
 
-        public void TradePositionPlayer(Vector2 firepitPos)
-        {
-            transform.position = new Vector2(firepitPos.x, firepitPos.y);
-        }
 
         void CommandsPlayer()
         {
@@ -68,9 +65,25 @@ namespace Player
                 _playerAnim.SetBool("IsRunning", false);
             }
 
-
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                _control.StartCoroutine("TransitionDayAndNight");
+                GameManager.Instance.ChangeDayCycle();
+                if (GameManager.Instance.CurrentCycle == GameManager.DayNightCycle.Day)
+                {
+                    _playerAnim.SetBool("IsDay", true);
+                    _playerAnim.Play("Player_Idle_Day");
+                }
+                else
+                {
+                    _playerAnim.SetBool("IsDay", false);
+                    _playerAnim.Play("Player_Idle");
+                }
+            }
 
         }
+
+
 
     }
 }
