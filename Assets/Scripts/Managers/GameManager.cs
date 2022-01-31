@@ -5,11 +5,16 @@ namespace Manager
     public class GameManager : MonoBehaviour
     {
         public bool IsRunning { get; private set; }
+        public bool OnDialogue { get; private set; }
 
         public static GameManager Instance;
 
+        public CurrentScriptPhase CurrentScriptPhaseCycle;
+
+
         public enum DayNightCycle { Day, Night };
         public DayNightCycle CurrentCycle;
+        public DayNightCycle StartCycle;
 
         void Awake()
         {
@@ -22,7 +27,10 @@ namespace Manager
             {
                 Destroy(gameObject);
             }
-            CurrentCycle = DayNightCycle.Night;
+
+            CurrentScriptPhaseCycle = FindObjectOfType<CurrentScriptPhase>();
+            
+            CurrentCycle = CurrentScriptPhaseCycle.CurrentCyclePhase;
         }
 
         public void ChangeDayCycle()
@@ -35,6 +43,11 @@ namespace Manager
             {
                 CurrentCycle = DayNightCycle.Day;
             }
+        }
+
+        public void ChangeDayCycleToStart()
+        {
+            CurrentCycle = StartCycle;
         }
 
     }
