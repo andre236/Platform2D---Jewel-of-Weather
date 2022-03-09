@@ -4,7 +4,9 @@ using Manager;
 
 public class CurrentScriptPhase : MonoBehaviour
 {
-
-    public GameManager.DayNightCycle CurrentCyclePhase;
+    private void OnEnable()
+    {
+        GameManager.Instance.CurrentCycle = GameManager.DayNightCycle.Night;
+    }
 
 }

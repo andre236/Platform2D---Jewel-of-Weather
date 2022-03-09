@@ -31,6 +31,7 @@ public class FadeScript : MonoBehaviour
         if (GameManager.Instance.CurrentCycle == GameManager.DayNightCycle.Day && gameObject.CompareTag("White") || GameManager.Instance.CurrentCycle == GameManager.DayNightCycle.Night && gameObject.CompareTag("Black"))
         {
             _currentAnim.SetBool("IsFadein", true);
+
         }
         else
         {

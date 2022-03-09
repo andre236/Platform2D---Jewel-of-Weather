@@ -9,7 +9,6 @@ public class TransitionScenes : MonoBehaviour
     private bool _onConfirmedLoad = false;
     private Image _transition;
 
-
     void Awake()
     {
         _transition = GameObject.Find("Transition").GetComponent<Image>();

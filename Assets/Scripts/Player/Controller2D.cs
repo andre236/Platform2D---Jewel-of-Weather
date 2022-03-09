@@ -1,10 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Player
 {
-    [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(Collider2D))]
     public class Controller2D : MonoBehaviour
     {
         [SerializeField]
@@ -19,12 +18,12 @@ namespace Player
         [SerializeField]
         private Transform _footPosition;
         private Rigidbody2D _playerRB;
-
-        public bool OnGround { get; private set; }
+        public bool IsOnGround { get; private set; }
 
         private void Awake()
         {
             _playerRB = GetComponent<Rigidbody2D>();
+            StartCoroutine(FreezeRigidbody());
         }
 
         private void FixedUpdate()
@@ -33,15 +32,29 @@ namespace Player
 
         }
 
-        void CheckOnTheGround()
+        public void CheckOnTheGround()
         {
-            OnGround = false;
+            IsOnGround = false;
 
             Collider2D[] colliders = Physics2D.OverlapCircleAll(_footPosition.position, _radiusToGround, _groundLayer);
             for (int i = 0; i < colliders.Length; i++)
             {
                 if (colliders[i].gameObject != gameObject)
-                    OnGround = true;
+                    IsOnGround = true;
+            }
+        }
+
+        public void Movement(float amountMovement, bool isJumping)
+        {
+            if (IsOnGround || _airControl)
+            {
+                ApplyMovement(amountMovement);
+            }
+
+            if (IsOnGround && isJumping)
+            {
+                IsOnGround = false;
+                _playerRB.AddForce(new Vector2(_playerRB.position.x, _jumpForce));
             }
         }
 
@@ -53,28 +66,12 @@ namespace Player
             _playerRB.velocity = Vector2.SmoothDamp(_playerRB.velocity, velocityPlayer, ref velocity, _smoothMovement);
         }
 
-        public void Movement(float amountMovement, bool isJumping)
-        {
-            if (OnGround || _airControl)
-            {
-                ApplyMovement(amountMovement);
-            }
-
-            if (OnGround && isJumping)
-            {
-                OnGround = false;
-                _playerRB.AddForce(new Vector2(_playerRB.position.x, _jumpForce));
-            }
-        }
-
-
-        public IEnumerator TransitionDayAndNight()
+        public IEnumerator FreezeRigidbody()
         {
             _playerRB.constraints = RigidbodyConstraints2D.FreezeAll;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
             _playerRB.constraints = RigidbodyConstraints2D.None;
             _playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
-
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Manager
             {
                 Destroy(gameObject);    
             }
-            _bgm = GetComponentInChildren<AudioSource>();
+            _bgm = transform.Find("BGM").GetComponent<AudioSource>();
             _sfxs = GetComponent<AudioSource>();
 
             PlayBGM(0);
@@ -40,6 +40,13 @@ namespace Manager
         public void PlaySoundEffect(int index)
         {
             _sfxs.clip = _sfxsAudioClips[index];
+            _sfxs.Play();
+        }
+
+        public void PlaySoundEffect(int index, float pitch)
+        {
+            _sfxs.clip = _sfxsAudioClips[index];
+            _sfxs.pitch = pitch;
             _sfxs.Play();
         }
 

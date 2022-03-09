@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Manager
 {
@@ -28,13 +29,17 @@ namespace Manager
                 Destroy(gameObject);
             }
 
+            CurrentScriptPhaseCycle = null;
+
             CurrentScriptPhaseCycle = FindObjectOfType<CurrentScriptPhase>();
             
-            CurrentCycle = CurrentScriptPhaseCycle.CurrentCyclePhase;
+
+
         }
 
         public void ChangeDayCycle()
         {
+            AudioManager.Instance.PlaySoundEffect(3);
             if(CurrentCycle == DayNightCycle.Day)
             {
                 CurrentCycle = DayNightCycle.Night;

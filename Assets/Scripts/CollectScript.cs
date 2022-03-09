@@ -1,7 +1,7 @@
 using UnityEngine;
 using Manager;
 
-public class KeyScript : MonoBehaviour
+public class CollectScript : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
